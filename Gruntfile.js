@@ -65,7 +65,7 @@
   				dir: 'themes/<%= wp.theme %>',
   				commit: true,
   				push: true,
-  				message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+  				message: 'Built from commit <%= date %> on branch master'
   			},
   			prod: {
   				options: {
