@@ -2,7 +2,7 @@
 <html <?php language_attributes( 'html' ); ?>>
 
 <head>
-<?php wp_head(); // Hook required for scripts, styles, and other <head> items. ?>
+<?php wp_head(); ?>
 <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/styles/css/main.css">
 </head>
 

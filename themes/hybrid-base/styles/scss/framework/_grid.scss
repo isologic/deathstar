@@ -1,5 +1,3 @@
-@import "susy";
-@import "breakpoint";
 @import "breakpoints";
 
 $susy: (
@@ -19,11 +17,3 @@ $em-base: 16px;
 $row-max-width: em(666*$pi/$phi);
 $max-width: layout($row-max-width 12);
 $max: $max-width;
-
-.layout-1c {
-
-  #container {
-    @include container($max);
-  }
-
-}

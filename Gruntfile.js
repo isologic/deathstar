@@ -16,7 +16,7 @@
         },
         sass: {
           files: 'themes/<%= wp.theme %>/styles/scss/{,*/}*.scss',
-          tasks: ['compass']
+          tasks: ['compass', 'pleeease', 'autoprefixer']
         },
         livereload: {
           files: ['themes/<%= wp.theme %>/{,*/}*.php', 'themes/<%= wp.theme %>/{,*/}*.js', 'themes/<%= wp.theme %>/img/*.{png,jpg,webp,svg}']
@@ -84,7 +84,7 @@
         }
       }
     });
-    grunt.registerTask('build', ['compass']);
+    grunt.registerTask('build', ['compass', 'pleeease', 'autoprefixer']);
     grunt.registerTask('git', ['build', 'buildcontrol']);
     return grunt.registerTask('default', ['build', 'watch']);
   };

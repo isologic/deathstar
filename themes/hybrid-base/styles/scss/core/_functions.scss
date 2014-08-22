@@ -1,0 +1,426 @@
+// Strip units to do mathematic functions
+
+@function strip-units($number) {
+    @return $number / ($number * 0 + 1);
+}
+
+// Convert pixels to ems
+// eg. for a relational value of 12px write em(12) when the parent is 16px
+// if the parent is another value say 24px write em(12, 24)
+
+@function em($pxval, $base: $em-base) {
+    @if not unitless($pxval) {
+        $pxval: strip-units($pxval);
+    }
+    @if not unitless($base) {
+        $base: strip-units($base);
+    }
+    @return ($pxval / $base) * 1em;
+}
+
+// Convert pixels to rems
+// eg. for a relational value of 12px write rem(12)
+// Assumes $em-base is the font-size of <html>
+
+@function rem($pxval) {
+    @if not unitless($pxval) {
+        $pxval: strip-units($pxval);
+    }
+
+    $base: $em-base;
+    @if not unitless($base) {
+        $base: strip-units($base);
+    }
+    @return ($pxval / $base) * 1rem;
+}
+
+// Flexible grid
+@function flex-grid($columns, $container-columns: $fg-max-columns) {
+    $width: $columns * $fg-column + ($columns - 1) * $fg-gutter;
+    $container-width: $container-columns * $fg-column + ($container-columns - 1) * $fg-gutter;
+    @return percentage($width / $container-width);
+}
+
+// Flexible gutter
+@function flex-gutter($container-columns: $fg-max-columns, $gutter: $fg-gutter) {
+    $container-width: $container-columns * $fg-column + ($container-columns - 1) * $fg-gutter;
+    @return percentage($gutter / $container-width);
+}
+
+// number relative ( number $size )
+@function relative($size) {
+    @if($use-rem == true and $use-em == false and $use-percent == false) {
+        @return rem($size);
+    } @elseif($use-em == true and $use-rem == false and $use-percent == false) {
+        @return em($size);
+    } @elseif($use-percent == true and $use-rem == false and $use-em == false) {
+        @return percent($size);
+    }
+
+    @return $size; // we're still using pixels
+}
+
+// Convert shorthand to the 4-value syntax (Bourbon.io)
+@function unpack($shorthand) {
+    @if length($shorthand) == 1 {
+        @return nth($shorthand, 1) nth($shorthand, 1) nth($shorthand, 1) nth($shorthand, 1);
+    }
+    @else if length($shorthand) == 2 {
+        @return nth($shorthand, 1) nth($shorthand, 2) nth($shorthand, 1) nth($shorthand, 2);
+    }
+    @else if length($shorthand) == 3 {
+        @return nth($shorthand, 1) nth($shorthand, 2) nth($shorthand, 3) nth($shorthand, 2);
+    }
+    @else {
+        @return $shorthand;
+    }
+}
+
+// Gumby 2.6 Color Pallete
+
+@function getColor($key, $state: false, $list: $ui-coloring) {
+    @each $color in $list {
+        @if $key == nth($color, 1) and $state == default {
+            @return nth($color, 2);
+        }
+        @else if $key == nth($color, 1) and $state == hover {
+            @return nth($color, 3);
+        }
+        @else if $key == nth($color, 1) {
+            @return nth($color, 1);
+        }
+    }
+    @return false;
+}
+
+@mixin palette($shade, $palette-text-color:false) {
+    @if $shade == getColor($shade) {
+        @if $palette-text-color != false  {
+            color: $palette-text-color;
+        }
+        @else {
+            color: lighten(getColor($shade, default), 80%);
+        }
+        background: getColor($shade, default);
+        border: 1px solid getColor($shade, default);
+        &:hover {
+            background: getColor($shade, hover);
+            border: 1px solid darken(getColor($shade, hover), 3%);
+        }
+        &:active {
+            background: darken(getColor($shade, default), 10%);
+            border: 1px solid darken(getColor($shade, default), 10%);
+        }
+
+        @if $shade == default {
+            @if $palette-text-color != false  {
+                color: $palette-text-color;
+            }
+            @else {
+                color: darken(getColor($shade, default), 61.5%);
+            }
+            border: 1px solid getColor($shade, default);
+            &:hover {
+                border: 1px solid darken(getColor($shade, hover), 5%);
+            }
+        }
+        @if $shade == warning {
+            @if $palette-text-color != false  {
+                color: $palette-text-color;
+            }
+            @else {
+                color: darken(getColor($shade, hover), 40%);
+            }
+        }
+    }
+    @else {
+        @if $palette-text-color != false {
+            color: $palette-text-color;
+        }
+        @else {
+            color: lighten($shade, 80%);
+        }
+        background: $shade;
+        border: 1px solid $shade;
+        &:hover {
+            background: lighten($shade, 30%);
+            border: 1px solid lighten($shade, 27%);
+        }
+        &:active {
+            background: darken($shade, 10%);
+            border: 1px solid darken($shade, 10%);
+        }
+    }
+}
+
+// list triad ( color $color )
+@function triad($color) {
+    @if(type-of($color) != "color") {
+        @warn "Type must be color to continue. Aborting.";
+        @return null;
+    }
+
+    $triad: ();
+    $hue: strip-units(hue($color));
+
+    @for $i from 1 through 3 {
+        @if($hue + 120 > 360) {
+            $hue: ($hue + 120) - 360;
+        } @else {
+            $hue: $hue + 120;
+        }
+        $color: hsl($hue, saturation($color), lightness($color));
+        $triad: append($triad, $color);
+    }
+
+    @return $triad;
+}
+
+// list square ( color $color )
+@function square($color) {
+    @if(type-of($color) != "color") {
+        @warn "Type must be color to continue. Aborting.";
+        @return null;
+    }
+
+    $square: ();
+    $hue: strip-units(hue($color));
+
+    @for $i from 1 through 4 {
+        @if($hue + 90 > 360) {
+            $hue: ($hue + 90) - 360;
+        } @else {
+            $hue: $hue + 90;
+        }
+        $color: hsl($hue, saturation($color), lightness($color));
+        $square: append($square, $color);
+    }
+
+    @return $square;
+}
+
+@function _random-color($palette: false) {
+    $rgb: "";
+
+    @if $palette {
+        @if type-of($palette) == string {
+            @if $palette == monochrome {
+                $rgb: if(round(random()) == 1, #000, #fff);
+            }
+            @else if $palette == grayscale or $palette == greyscale {
+                $rgb: hsl(0, 0, random(100) + 0%);
+            }
+            @else {
+                @warn "Invalid keywords (#{$palette})";
+            }
+
+        }
+        @else {
+            @warn "#{$palette} not a string";
+        }
+    }
+    @else {
+        $red: random(255);
+        $green: random(255);
+        $blue: random(255);
+
+        $rgb: rgb($red, $green, $blue);
+    }
+
+    @return $rgb;
+}
+
+@function tint($color, $percent){
+    @return mix(white, $color, $percent);
+}
+
+@function shade($color, $percent){
+    @return mix(black, $color, $percent);
+}
+
+@function colorize($color, $change: n) {
+  @if $change == l1 {
+    @return tint($color, 20%);
+  }
+  @else if $change == l2 {
+    @return tint($color, 40%);
+  }
+  @else if $change == l3 {
+    @return tint($color, 60%);
+  }
+  @else if $change == l4 {
+    @return tint($color, 80%);
+  }
+  @else if $change == d1 {
+    @return shade($color, 20%);
+  }
+  @else if $change == d2 {
+    @return shade($color, 40%);
+  }
+  @else if $change == d3 {
+    @return shade($color, 60%);
+  }
+  @else if $change == d4 {
+    @return shade($color, 80%);
+  }
+  @else {
+    @return ($color);
+  }
+}
+
+@function trans($color, $percentage) {
+  @return lighten($color, (1-$percentage)*50%);
+}
+@function transd($color, $percentage) {
+  @return darken($color, (1-$percentage)*50%);
+}
+
+@function _img($filename) {
+  @return url(#{$_base-img-path}#{$filename});
+}
+
+@function _icon($filename) {
+  @return url(#{$_base-icon-path}#{$filename});
+}
+
+// -----------------------------------------------------------
+// Building color palettes with Sass @functions
+// http://codepen.io/SitePoint/pen/lqLvD
+// -----------------------------------------------------------
+@function color-diff($a, $b) {
+  $sat: saturation($a) - saturation($b);
+  $lig:  lightness($a) -  lightness($b);
+  $fn-sat: if($sat > 0, 'desaturate', 'saturate');
+  $fn-lig: if($lig > 0, 'darken', 'lighten');
+
+  @return (
+    adjust-hue: -(hue($a) - hue($b)),
+    #{$fn-sat}: abs($sat),
+    #{$fn-lig}: abs($lig)
+  );
+}
+
+@function palette-diff($palette) {
+  $base: map-get($palette, base);
+  $colors: map-get($palette, colors);
+
+  $diffs: ();
+
+  @each $color in $colors {
+    $diffs: append($diffs, color-diff($base, $color));
+  }
+
+  @return $diffs;
+}
+
+$base-palette: (
+  base: #FF6351,
+  colors: #CFDFE8 #BFB9C3 #CF9192 #FF6351 #BF4A3C #7F3128 #732C24
+) !default;
+
+$palette-diffs: palette-diff($base-palette) !default;
+
+@function apply-diff($color, $diff) {
+  // We call the $key (function),
+  // passing the $color and the $value as parameters
+  // e.g. `call(adjust-hue, #BADA55, 42)`
+  @each $key, $value in $diff {
+    $color: call($key, $color, $value);
+  }
+
+  @return $color;
+}
+
+@function create-palette($base-color) {
+  $colors: ();
+
+  @each $diff in $palette-diffs {
+    $colors: append($colors, apply-diff($base-color, $diff));
+  }
+
+  @return $colors;
+}
+
+@function palette($base-color) {
+  $colors: create-palette($base-color);
+  $keys: 'lightest' 'lighter' 'light' 'base' 'dark' 'darker' 'darkest';
+  $palette: ();
+
+  @for $i from 1 through min(length($colors), length($keys)) {
+    $palette: map-merge($palette, (nth($keys, $i): nth($colors, $i)));
+  }
+
+  @return $palette;
+}
+
+@function _lightest($palette) {
+    @if not map-has-key($palette, 'lightest') {
+        @warn "`#{inspect($palette)}` doesn't seem to have a key named `lightest`.";
+    }
+
+    @return map-get($palette, 'lightest');
+}
+
+@function _lighter($palette) {
+    @if not map-has-key($palette, 'lighter') {
+        @warn "`#{inspect($palette)}` doesn't seem to have a key named `lighter`.";
+    }
+
+    @return map-get($palette, 'lighter');
+}
+
+@function _light($palette) {
+    @if not map-has-key($palette, 'light') {
+        @warn "`#{inspect($palette)}` doesn't seem to have a key named `light`.";
+    }
+
+    @return map-get($palette, 'light');
+}
+
+@function _dark($palette) {
+    @if not map-has-key($palette, 'dark') {
+        @warn "`#{inspect($palette)}` doesn't seem to have a key named `dark`.";
+    }
+
+    @return map-get($palette, 'dark');
+}
+
+@function _darker($palette) {
+    @if not map-has-key($palette, 'darker') {
+        @warn "`#{inspect($palette)}` doesn't seem to have a key named `darker`.";
+    }
+
+    @return map-get($palette, 'darker');
+}
+
+@function _darkest($palette) {
+    @if not map-has-key($palette, 'darkest') {
+        @warn "`#{inspect($palette)}` doesn't seem to have a key named `darkest`.";
+    }
+
+    @return map-get($palette, 'darkest');
+}
+
+@function _light-invert($palette, $shade) {
+    @if $shade == 'light' {
+        @return invert(map-get($palette, $shade));
+    }
+    @if $shade == 'lighter' {
+        @return invert(map-get($palette, $shade));
+    }
+    @if $shade == 'lightest' {
+        @return invert(map-get($palette, $shade));
+    }
+}
+
+@function _dark-invert($palette, $shade) {
+    @if $shade == 'dark' {
+        @return invert(map-get($palette, $shade));
+    }
+    @if $shade == 'darker' {
+        @return invert(map-get($palette, $shade));
+    }
+    @if $shade == 'darkest' {
+        @return invert(map-get($palette, $shade));
+    }
+}

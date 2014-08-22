@@ -1,0 +1,153 @@
+$black18 : #181b1c;
+$blu0d1 : #0D1E23;
+$blu2a : #2a3135;
+$blu334 : #334e64;
+$blu7c : #a7cfdf;
+$grey1d: #1d1d1d;
+
+$gn666: #b9c666;
+$aqua40 : shade(aquamarine, 40%);
+$main: #2c3e50;
+$accent: lighten($main, 40%);
+
+// Descriptive colors:
+$hopbush: #c69;
+$bouquet: #b37399;
+$venus: #998099;
+$patina: #699;
+$nebula: #d2e1dd;
+$white: #fff;
+$dawn-pink: #f2ece4;
+$wafer: #e1d7d2;
+$iron: #dadbdf;
+$regent-grey: #808c99;
+$pale-sky: #6b717f;
+$midnight-blue: #036;
+$black: #000;
+
+
+$cp-0: #1D191C;
+$cp-1: #E0DEDF;
+$cp-2: #7E7D7E;
+$cp-3: #391932;
+$cp-4: #69255A;
+
+$cs-0: #242521;
+$cs-1: #F9FAF8;
+$cs-2: #A5A5A4;
+$cs-3: #414B20;
+$cs-4: #748931;
+
+
+$body-copy-color: #4b4b4b;
+$heading-color: #344;
+$heading-color-alt: #502a0a;
+$pull-quote-color: #2C4950;
+$small-caps-color: gray;
+
+// color range
+$white:               #ffffff !default;
+$black:               #111111 !default;
+// modifier colors
+$yellow:              #f1c40f !default;
+$orange:              #e67e22 !default;
+$red:                 #e74c3c !default;
+$pink:                #f02475 !default;
+$purple:              #9b59b6 !default;
+$charcoal:            #383636 !default;
+$asphalt:             #34495e !default;
+$blue:                #3498db !default;
+$turquoise:           #1abc9c !default;
+$green:               #2ecc71 !default;
+
+$modifier-name:       "green"   "blue"   "purple"   "yellow"   "orange"   "red"   "pink"   "turquoise"   "asphalt"  "charcoal"  "white"   "black" !default;
+$modifier-code:       $green    $blue    $purple    $yellow    $orange    $red    $pink    $turquoise    $asphalt   $charcoal   $white    $black  !default;
+$modifier-text:       $white    $white   $white     $white     $white     $white  $white   $white        $white     $white      $black    $white  !default;
+
+// -------------------------------- //
+//  Social Network Color Map    //
+
+$dribbble:            #ea4c89 !default;
+$dropbox:             #007FE1 !default;
+$facebook:         #3A5898 !default;
+$flickr:                  #FF0083 !default;
+$foursquare:        #0A9ACF !default;
+$googleplus:      #DE492F !default;
+$gmail:                #E54C3B !default;
+$github:                 #171516 !default;
+$instagram:         #231F20 !default;
+$linkedin:           #007AB8 !default;
+$pinterest:             #CD1D1F !default;
+$rss:                        #FF7F00 !default;
+$skype:                 #009FE3 !default;
+$stackoverflow:  #FF7312 !default;
+$trello:                  #3493CA !default;
+$tumblr:              #44546B !default;
+$twitter:               #00ABF0 !default;
+$youtube:            #CD332D !default;
+
+$profiles: (
+    bandcamp:   #4e9bac,
+    delicious:      #248cff,
+    dribbble:           $dribbble,
+    facebook:       $facebook,
+    ficly:                  #b51c2c,
+    flickr:                 $flickr,
+    github:             $github,
+    google:             $googleplus,
+    instagram:      $instagram,
+    kickstarter:        #76cc1e,
+    lanyrd:                 #152e51,
+    lastfm:                 #d51007,
+    linkedin:           $linkedin,
+    photodrop:      #cdb6e3,
+    pinterest:      $pinterest,
+    rdio:                   #0088da,
+    soundcloud:     #f60,
+    stumbleupon:    $instagram,
+    tumblr:                 $tumblr,
+    twitter:                $twitter,
+    vimeo:              #aad450,
+    youtube:            $youtube
+);
+
+@each $profile, $bgcolor in $profiles {
+    a[href*="#{$profile}"] {
+        padding-left: 0.25em;
+        padding-right: 0.25em;
+        border-radius: 0.25em;
+    }
+    a[href*="#{$profile}"]:hover {
+        color: #FFF;
+        background-color: $bgcolor !important;
+    }
+    a[href*="#{$profile}"]:focus {
+        color: #FFF;
+        background-color: lighten($bgcolor, 10%) !important;
+    }
+}
+
+$joker-palette: (
+  base: #884883,
+  colors: $cp-2 $cp-3 $cp-4 $cs-1 $cs-2 $cs-3 $cs-4
+);
+
+$def-palette: palette($cs-4);
+
+
+$hr-color: $regent-grey;
+
+// shared defaults
+$background-color:          #f0f0f0 !default;
+$font-color:                #4b4b4b !default;
+
+$link-color:                desaturate($cs-4, 20) !default;
+$link-active:               lighten($cs-4, 10) !default;
+
+$code-text:                 #555555 !default;
+$code-background:           #ffffff !default;
+$selection-color:           $midnight-blue !default;
+$selection-text:            #ffffff !default;
+$border-thickness:          1px !default;
+$border-style:              solid !default;
+$border-color:              #dddddd !default;
