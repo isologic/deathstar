@@ -1,0 +1,66 @@
+$gutter:                    10px !default;
+$default-radius:            4px !default;
+$placeholderText-fallback:  true !default;
+
+$settings: (
+  global-light: 90deg,
+  base-img-path: "../img/",
+  base-icon-path: "../img/icons/",
+  base-font-size: 16px,
+  rem-fallback: true
+);
+
+
+// Scaling Variables (Modular Scale v2.0)
+$golden:           1.618;
+$minor-second:     1.067;
+$major-second:     1.125;
+$minor-third:      1.2;
+$major-third:      1.25;
+$perfect-fourth:   1.333;
+$augmented-fourth: 1.414;
+$perfect-fifth:    1.5;
+$minor-sixth:      1.6;
+$major-sixth:      1.667;
+$minor-seventh:    1.778;
+$major-seventh:    1.875;
+$octave:           2;
+$major-tenth:      2.5;
+$major-eleventh:   2.667;
+$major-twelfth:    3;
+$double-octave:    4;
+
+$phi:          $golden;
+$pi:            3.14159265;
+
+$em-base: 16px;
+$ms-base: 1em;
+$ms-ratio: $golden;
+$pi-ratio: 1 / 3.14159265;
+
+$font-size: 100; // percentage value (16 * 112.5% = 18px)
+$font-base: 16 * ($font-size/100); // converts our percentage to a pixel value
+
+$use-rem: false !global; // use rem as default unit?
+$use-em: true !global; // use em as default unit?
+$use-percent: false !global; // use percentage as default unit?
+$use-px-fallback: true !global; // allow for pixel fall back
+
+// Define z-indexes for various elements
+// @link http://www.sitepoint.com/using-sass-maps/
+// @type number
+// z-index reference
+$zindex: (
+  modal: 9000,
+  overlay: 8000,
+  dropdown: 7000,
+  header: 6000,
+  footer: 5000
+);
+
+$pad: 1em;
+$space: 1em;
+
+// Floated images margins
+$wp-small-margin: 0.25em;
+$wp-big-margin: 1em;

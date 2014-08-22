@@ -1,0 +1,47 @@
+# As Yeoman assumes the usage of Bower and Grunt, ignore the below:
+bower_components
+node_modules
+themes/hybrid-base/components
+themes/hybrid-base/library
+
+# Ignore automatically generated cruft
+*.log
+.sass-cache
+.git
+
+# Ignore config
+local-config.php
+*.yml
+hanbs.json
+Gruntfile.min.js
+__Gruntfile.coffee
+
+# Operating system files
+.Spotlight-V100
+.Trashes
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+
+# Vagrant
+.vagrant
+
+# WordPress + popular plugin generated — adapted from:
+# https://github.com/github/gitignore/blob/master/WordPress.gitignore
+sitemap.xml
+sitemap.xml.gz
+wp-config.php
+core
+plugins
+upgrade
+uploads
+themes/dgk
+themes/hantheme
+themes/option-tree-theme
+themes/roots
+themes/roots-sass
+themes/sky
+themes/twentyfourteen
+themes/xixix
+themes/xyz

@@ -1,0 +1,13 @@
+$breakpoint-to-ems: true;
+
+$breakpoints: (
+  mobile: 'screen' max-width 480px,
+  tablet: 'screen' max-width 768px,
+  desktop: 'screen' max-width 1024px,
+  wide: 'screen' max-width 1280px
+);
+
+$mobile: map-get($breakpoints, 'mobile');
+$tablet: map-get($breakpoints, 'tablet');
+$desktop: map-get($breakpoints, 'desktop');
+$wide: map-get($breakpoints, 'wide');

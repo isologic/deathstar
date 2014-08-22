@@ -1,0 +1,29 @@
+@import "susy";
+@import "breakpoint";
+@import "breakpoints";
+
+$susy: (
+  math: fluid,
+  columns: 12,
+  gutters: $pi/$phi,
+  gutter-position: inside,
+  container: auto,
+  container-position: center,
+  global-box-sizing: border-box,
+  use-custom: (
+    box-sizing: true
+  )
+);
+
+$em-base: 16px;
+$row-max-width: em(666*$pi/$phi);
+$max-width: layout($row-max-width 12);
+$max: $max-width;
+
+.layout-1c {
+
+  #container {
+    @include container($max);
+  }
+
+}
